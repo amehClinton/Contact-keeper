@@ -1,0 +1,12 @@
+{
+  "mongoURI": "mongodb+srv://clinton:clinton123@contact-keeper-xbxq7.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "secret",
+  "SMTP_HOST": "smtp.mailtrap.io",
+  "SMTP_PORT": "2525",
+  "SMTP_EMAIL": "0cc88e760b9db1",
+  "SMTP_PASSWORD": "2ea54d9f4ed6d0",
+  "FROM_EMAIL": "noreply@contactKeeper.io",
+  "FROM_NAME": "contactKeeper",
+  "JWT_EXPIRE": "30d",
+  "JWT_COOKIE_EXPIRE": "30"
+}
