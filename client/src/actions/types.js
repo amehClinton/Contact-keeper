@@ -18,3 +18,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const FORGOT_FAIL = "FORGOT_FAIL";
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const CLEAR_ERROR = "CLEAR_ERROR";
+export const CLEAR_PROFILE = "CLEAR_PROFILE";

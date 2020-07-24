@@ -7,6 +7,6 @@
   "SMTP_PASSWORD": "2ea54d9f4ed6d0",
   "FROM_EMAIL": "noreply@contactKeeper.io",
   "FROM_NAME": "contactKeeper",
-  "JWT_EXPIRE": "30d",
+  "JWT_EXPIRE": "1d",
   "JWT_COOKIE_EXPIRE": "30"
 }

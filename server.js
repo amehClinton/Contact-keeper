@@ -1,6 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
 
@@ -11,6 +12,9 @@ connectDB();
 // Init Middleware
 app.use(express.json({ extended: false }));
 app.use(morgan("dev"));
+
+// Enable cors
+app.use(cors());
 
 app.get("/", (req, res) =>
   res.json({ msg: " Welcome to  the ContactKeeper Api...." })

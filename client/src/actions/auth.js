@@ -1,30 +1,26 @@
-import axios from "axios";
-
+import api from "../utils/api";
+import { setAlert } from "./alert";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  LOGIN_FAIL,
-  LOGIN_SUCCESS,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
   LOGOUT,
+  FORGOT_PASSWORD,
+  FORGOT_FAIL,
 } from "./types";
-import setAuthToken from "../utils/sethAuthToken";
 
-import { setAlert } from "./alert";
-
-// load user
+// Load User
 export const loadUser = () => async (dispatch) => {
-  if (localStorage.token) {
-    setAuthToken(localStorage.token);
-  }
   try {
-    const res = await axios.get("/api/auth");
+    const res = await api.get("/auth");
+
     dispatch({
       type: USER_LOADED,
       payload: res.data,
     });
-    console.log(res);
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
@@ -33,18 +29,11 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Register User
-
 export const register = ({ name, email, password }) => async (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
   const body = JSON.stringify({ name, email, password });
 
   try {
-    const res = await axios.post("/api/users", body, config);
+    const res = await api.post("/users", body);
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -60,39 +49,60 @@ export const register = ({ name, email, password }) => async (dispatch) => {
 
     dispatch({
       type: REGISTER_FAIL,
-      payload: err.response.data.msg,
     });
   }
 };
+
 // Login User
 export const login = (email, password) => async (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post("/api/auth", body, config);
+    const res = await api.post("/auth", body);
 
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
     });
+
     dispatch(loadUser());
   } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "primary")));
+    }
+
     dispatch({
       type: LOGIN_FAIL,
-      payload: err.response.data.msg,
     });
   }
 };
 
-// logout
+// forgot password
+export const forgotPassword = (email) => async (dispatch) => {
+  const body = JSON.stringify({ email });
+
+  try {
+    const res = await api.post("/auth", body);
+    dispatch({
+      type: FORGOT_PASSWORD,
+      payload: res.data,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "primary")));
+    }
+
+    dispatch({
+      type: FORGOT_FAIL,
+    });
+  }
+};
+
+// Logout / Clear Profile
 export const logout = () => (dispatch) => {
-  dispatch({
-    type: LOGOUT,
-  });
+  dispatch({ type: LOGOUT });
 };

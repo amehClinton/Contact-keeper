@@ -44,15 +44,18 @@ router.post(
       let user = await User.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({ msg: "Invalid Credentials" });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res.status(400).json({ msg: "Invalid Credentials" });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
-
       const payload = {
         user: {
           id: user.id,
@@ -78,7 +81,7 @@ router.post(
 );
 
 // @desc      Forgot password
-// @route     POST /api/v1/auth/forgotpassword
+// @route     POST /api/auth/forgotpassword
 // @access    Public
 router.post(
   "/forgotpassword",
@@ -93,7 +96,7 @@ router.post(
 
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).send("User Not Found");
+      return res.status(404).json({ errors: [{ msg: "User not found" }] });
     }
 
     // Get reset token

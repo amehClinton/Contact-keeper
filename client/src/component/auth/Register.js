@@ -6,43 +6,31 @@ import { setAlert } from "../../actions/alert";
 
 import PropTypes from "prop-types";
 
-const Register = ({ setAlert, register, error, isAuthenticated }) => {
-  useEffect(() => {
-    if (isAuthenticated) {
-      setAlert("succesful!", "success");
-      return <Redirect to='/dashboard' />;
-    }
-    if (error === "user already exists") {
-      setAlert(error, "danger");
-    }
-
-    // eslint-disable-next-line
-  }, [isAuthenticated]);
-
+const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    passsword2: "",
+    password2: "",
   });
 
   const { name, email, password, password2 } = formData;
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (name === "" || email === "" || password === "") {
-      setAlert("Please enter all fields", "primary");
-    } else if (password !== password2) {
+    if (password !== password2) {
       setAlert("Passwords do not match", "primary");
     } else {
-      register({
-        name,
-        email,
-        password,
-      });
+      register({ name, email, password });
     }
   };
+
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
 
   return (
     <div className='form-container'>

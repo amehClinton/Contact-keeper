@@ -1,33 +1,34 @@
 import React from "react";
+import { Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
+import Spinner from "../Layout/Spinner";
 
 const PrivateRoute = ({
-  comoponent: Component,
-  auth,
-  isAuthenticated,
-  loading,
+  component: Component,
+  auth: { isAuthenticated, loading },
   ...rest
 }) => (
   <Route
     {...rest}
     render={(props) =>
-      !isAuthenticated && !loading ? (
-        <Redirect to='/login' />
-      ) : (
+      loading ? (
+        <Spinner />
+      ) : isAuthenticated ? (
         <Component {...props} />
+      ) : (
+        <Redirect to='/login' />
       )
     }
   />
 );
 
-PrivateRoute.PropType = {
-  isAuthenticated: PropTypes.bool,
+PrivateRoute.propTypes = {
+  auth: PropTypes.object.isRequired,
 };
+
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

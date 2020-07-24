@@ -6,6 +6,8 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGOUT,
+  FORGOT_FAIL,
+  FORGOT_PASSWORD,
 } from "../actions/types";
 
 const initialState = {
